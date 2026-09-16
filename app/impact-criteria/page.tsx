@@ -428,7 +428,7 @@ export default function ImpactCriteriaPage() {
     <div className="max-w-4xl">
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h1 className="text-xl font-semibold text-[#0a0a0a] mb-1">영향도 기준표 관리</h1>
+          <h1 className="text-xl font-semibold text-[#0a0a0a] mb-1">장애기준표 관리</h1>
           <p className="text-sm text-[#555]">
             계열사별 장애등급 산정 항목(비즈니스 영향도 / 장애 복잡도 / 고객서비스 영향도)의 가중치와 세부 항목을 조회하고 수정합니다.
           </p>

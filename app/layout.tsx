@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 // 여기에 네비게이션 항목을 추가하세요.
 const navItems = [
   { href: '/', label: '홈', Icon: Home },
-  { href: '/impact-criteria', label: '기준표 관리', Icon: SlidersHorizontal },
+  { href: '/impact-criteria', label: '장애기준표 관리', Icon: SlidersHorizontal },
   { href: '/grade-thresholds', label: '장애등급 판정기준', Icon: Gauge },
   { href: '/incident-calculation', label: '장애등급 계산', Icon: Calculator },
   { href: '/report-guide', label: '장애발생시 보고 현황', Icon: Send },
