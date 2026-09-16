@@ -27,4 +27,3 @@ Work out which specs this run covers:
 ## 3. Review once, at the end
 
 Only after **all** in-scope work is implemented, run a final typecheck, then use /review a single time to review the whole body of work together.
-    
