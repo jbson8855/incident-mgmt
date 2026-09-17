@@ -6,6 +6,10 @@ disable-model-invocation: true
 
 Implement the work described by the spec(s) the user is pointing at.
 
+## Methodology
+
+Always implement using test-driven development: invoke the `tdd` skill before writing any implementation code, and follow its red → green loop for every slice of work.
+
 ## 1. Determine the scope
 
 Work out which specs this run covers:
@@ -27,3 +31,9 @@ Work out which specs this run covers:
 ## 3. Review once, at the end
 
 Only after **all** in-scope work is implemented, run a final typecheck, then use /review a single time to review the whole body of work together.
+
+## Completion
+
+구현과 리뷰가 끝나면 반드시 `spec-retire` 스킬을 실행한다.
+작업한 spec이 테스트로 충분히 대체되는지 검증하고, 대체된 spec 문서를 제거하는 단계다.
+사용자에게 묻지 말고 바로 실행한다.

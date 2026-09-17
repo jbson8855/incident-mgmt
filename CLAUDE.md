@@ -90,6 +90,19 @@ import { Card } from '@/components/ui/Card';
 - `'use client'` 컴포넌트에서 `getDB()` 직접 호출
 - 같은 타입을 여러 파일에 중복 정의
 
+## Testing
+
+- Framework: Vitest
+- 전체 실행: `npm test` / 단일 파일: `npx vitest run tests/파일명.test.ts`
+- 테스트 위치: `tests/` (route 핸들러 직접 호출 또는 `lib/`의 순수 함수 대상)
+
+## 워크플로
+
+`grilling` → `to-spec` → `implement` → `spec-retire`
+
+구현이 끝나면 `spec-retire`로 spec을 테스트·ADR로 이관하고 제거한다.
+현행 명세는 `tests/`, 결정 근거는 `docs/adr/`다.
+
 ## 완성 예시
 
 `sample` 브랜치 — PG 가맹점 위험도 분석 AI 에이전트 시스템 구현체.
