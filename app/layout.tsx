@@ -18,10 +18,9 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'My Admin App',
+  title: '장애등급 산정',
 };
 
-// 여기에 네비게이션 항목을 추가하세요.
 const navItems = [
   { href: '/', label: '홈', Icon: Home },
   { href: '/impact-criteria', label: '장애기준표 관리', Icon: SlidersHorizontal },
@@ -38,8 +37,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className={`${sans.variable} ${mono.variable} font-sans antialiased`}>
         <aside className="fixed left-0 top-0 h-full w-52 bg-[#0a0a0a] flex flex-col">
           <div className="p-5 border-b border-white/10">
-            <div className="text-white/40 text-xs font-mono tracking-widest uppercase mb-1">Admin</div>
-            <div className="text-white text-sm font-semibold">My App</div>
+            <div className="text-white/40 text-xs font-mono tracking-widest uppercase mb-1">품질관리</div>
+            <div className="text-white text-sm font-semibold">장애등급 산정</div>
           </div>
           <nav className="flex flex-col py-2 flex-1">
             {navItems.map(({ href, label, Icon }) => (
