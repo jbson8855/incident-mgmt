@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDB } from '@/lib/db';
+import { isAdminRequest } from '@/lib/auth';
 import { isValidName, isValidRatio } from '@/lib/validation';
 import type { SelectionType } from '@/types';
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  if (!isAdminRequest(request)) {
+    return NextResponse.json({ error: '관리자만 수정할 수 있습니다.' }, { status: 401 });
+  }
+
   const { id } = await params;
   const itemId = Number(id);
   if (Number.isNaN(itemId)) {
@@ -55,6 +60,10 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 // 기본 동작은 비활성화(soft, is_active=0) — 과거 산정 이력과의 정합성을 위해 행 자체는 남겨둔다.
 // ?permanent=true를 주면 행을 완전히 삭제한다 — 잘못 추가한 항목("test" 등)을 되돌릴 때 사용.
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  if (!isAdminRequest(request)) {
+    return NextResponse.json({ error: '관리자만 수정할 수 있습니다.' }, { status: 401 });
+  }
+
   const { id } = await params;
   const itemId = Number(id);
   if (Number.isNaN(itemId)) {

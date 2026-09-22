@@ -1,5 +1,6 @@
 import { beforeEach, afterEach, describe, it, expect } from 'vitest';
 import { NextRequest } from 'next/server';
+import { adminCookieHeader } from './helpers/adminAuth';
 import { setupTestDb, teardownTestDb } from './helpers/testDb';
 import type {
   Company,
@@ -77,10 +78,11 @@ describe('영향도 기준표 관리', () => {
 
     const { PATCH } = await import('@/app/api/impact-criteria/items/[id]/route');
     const res = await PATCH(
-      new Request(`http://localhost/api/impact-criteria/items/${sdSales.id}`, {
+      new NextRequest(`http://localhost/api/impact-criteria/items/${sdSales.id}`, {
         method: 'PATCH',
+        headers: { Cookie: await adminCookieHeader() },
         body: JSON.stringify({ value: 0.6 }),
-      }) as any,
+      }),
       { params: Promise.resolve({ id: String(sdSales.id) }) },
     );
     expect(res.status).toBe(200);
@@ -101,8 +103,9 @@ describe('영향도 기준표 관리', () => {
 
     const { POST } = await import('@/app/api/impact-criteria/items/route');
     const res = await POST(
-      new Request('http://localhost/api/impact-criteria/items', {
+      new NextRequest('http://localhost/api/impact-criteria/items', {
         method: 'POST',
+        headers: { Cookie: await adminCookieHeader() },
         body: JSON.stringify({
           subcategoryId: targetSystems.id,
           name: '신규시스템',
@@ -110,7 +113,7 @@ describe('영향도 기준표 관리', () => {
           groupName: '기타',
           companyId,
         }),
-      }) as any,
+      }),
     );
     expect(res.status).toBe(201);
     const created = (await res.json()) as ImpactItem;
@@ -135,9 +138,13 @@ describe('영향도 기준표 관리', () => {
     const sdSales = targetSystems.items.find((i) => i.name === 'SD(영업)')!;
 
     const { DELETE } = await import('@/app/api/impact-criteria/items/[id]/route');
-    const res = await DELETE(new NextRequest(`http://localhost/api/impact-criteria/items/${sdSales.id}`, { method: 'DELETE' }), {
-      params: Promise.resolve({ id: String(sdSales.id) }),
-    });
+    const res = await DELETE(
+      new NextRequest(`http://localhost/api/impact-criteria/items/${sdSales.id}`, {
+        method: 'DELETE',
+        headers: { Cookie: await adminCookieHeader() },
+      }),
+      { params: Promise.resolve({ id: String(sdSales.id) }) },
+    );
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.success).toBe(true);
@@ -164,10 +171,11 @@ describe('영향도 기준표 관리', () => {
 
     const { PATCH } = await import('@/app/api/impact-criteria/subcategories/[id]/route');
     const res = await PATCH(
-      new Request(`http://localhost/api/impact-criteria/subcategories/${accessFailure.id}`, {
+      new NextRequest(`http://localhost/api/impact-criteria/subcategories/${accessFailure.id}`, {
         method: 'PATCH',
+        headers: { Cookie: await adminCookieHeader() },
         body: JSON.stringify({ weight: 0.4 }),
-      }) as any,
+      }),
       { params: Promise.resolve({ id: String(accessFailure.id) }) },
     );
     expect(res.status).toBe(200);
@@ -187,10 +195,11 @@ describe('영향도 기준표 관리', () => {
 
     const { PATCH } = await import('@/app/api/impact-criteria/categories/[id]/route');
     const res = await PATCH(
-      new Request(`http://localhost/api/impact-criteria/categories/${complexity.id}`, {
+      new NextRequest(`http://localhost/api/impact-criteria/categories/${complexity.id}`, {
         method: 'PATCH',
+        headers: { Cookie: await adminCookieHeader() },
         body: JSON.stringify({ weight: 0.25 }),
-      }) as any,
+      }),
       { params: Promise.resolve({ id: String(complexity.id) }) },
     );
     expect(res.status).toBe(200);
@@ -210,10 +219,11 @@ describe('영향도 기준표 관리', () => {
 
     const { PATCH } = await import('@/app/api/impact-criteria/items/[id]/route');
     const res = await PATCH(
-      new Request(`http://localhost/api/impact-criteria/items/${sdSales.id}`, {
+      new NextRequest(`http://localhost/api/impact-criteria/items/${sdSales.id}`, {
         method: 'PATCH',
+        headers: { Cookie: await adminCookieHeader() },
         body: JSON.stringify({ value: 1.5 }),
-      }) as any,
+      }),
       { params: Promise.resolve({ id: String(sdSales.id) }) },
     );
     expect(res.status).toBe(400);
@@ -235,10 +245,11 @@ describe('영향도 기준표 관리', () => {
 
     const { PATCH } = await import('@/app/api/impact-criteria/items/[id]/route');
     const res = await PATCH(
-      new Request(`http://localhost/api/impact-criteria/items/${sdSales.id}`, {
+      new NextRequest(`http://localhost/api/impact-criteria/items/${sdSales.id}`, {
         method: 'PATCH',
+        headers: { Cookie: await adminCookieHeader() },
         body: JSON.stringify({ name: '   ' }),
-      }) as any,
+      }),
       { params: Promise.resolve({ id: String(sdSales.id) }) },
     );
     expect(res.status).toBe(400);
@@ -268,10 +279,11 @@ describe('영향도 기준표 관리', () => {
 
     const { PATCH } = await import('@/app/api/grade-thresholds/[id]/route');
     const patchRes = await PATCH(
-      new Request(`http://localhost/api/grade-thresholds/${grade2.id}`, {
+      new NextRequest(`http://localhost/api/grade-thresholds/${grade2.id}`, {
         method: 'PATCH',
+        headers: { Cookie: await adminCookieHeader() },
         body: JSON.stringify({ minScore: 0.75, maxScore: 0.85 }),
-      }) as any,
+      }),
       { params: Promise.resolve({ id: String(grade2.id) }) },
     );
     expect(patchRes.status).toBe(200);
@@ -295,10 +307,11 @@ describe('영향도 기준표 관리', () => {
 
     const { PATCH } = await import('@/app/api/impact-criteria/categories/[id]/route');
     const res = await PATCH(
-      new Request(`http://localhost/api/impact-criteria/categories/${business.id}`, {
+      new NextRequest(`http://localhost/api/impact-criteria/categories/${business.id}`, {
         method: 'PATCH',
+        headers: { Cookie: await adminCookieHeader() },
         body: JSON.stringify({ weight: 0.9 }),
-      }) as any,
+      }),
       { params: Promise.resolve({ id: String(business.id) }) },
     );
     expect(res.status).toBe(200);

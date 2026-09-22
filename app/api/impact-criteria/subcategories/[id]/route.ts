@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDB } from '@/lib/db';
+import { isAdminRequest } from '@/lib/auth';
 import { isValidRatio } from '@/lib/validation';
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  if (!isAdminRequest(request)) {
+    return NextResponse.json({ error: '관리자만 수정할 수 있습니다.' }, { status: 401 });
+  }
+
   const { id } = await params;
   const subcategoryId = Number(id);
   if (Number.isNaN(subcategoryId)) {

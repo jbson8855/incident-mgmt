@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { AdminSessionBar, useAdminSession } from '@/components/AdminSessionBar';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import type {
@@ -122,6 +123,7 @@ function validateDraft(criteria: ImpactCriteria, pendingDeactivateIds: Set<numbe
 }
 
 export default function ImpactCriteriaPage() {
+  const { isAdmin, refresh: refreshAdmin } = useAdminSession();
   const [companies, setCompanies] = useState<Company[]>([]);
   const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
   const [draft, setDraft] = useState<ImpactCriteria | null>(null);
@@ -155,6 +157,8 @@ export default function ImpactCriteriaPage() {
 
   useEffect(() => {
     if (selectedCompanyId === null) return;
+    // 계열사를 바꿀 때마다 새 fetch가 시작됐음을 보여줘야 하므로 매번 다시 로딩 상태로 되돌린다.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     setMessage(null);
     setErrors([]);
@@ -433,10 +437,12 @@ export default function ImpactCriteriaPage() {
             계열사별 장애등급 산정 항목(비즈니스 영향도 / 장애 복잡도 / 고객서비스 영향도)의 가중치와 세부 항목을 조회하고 수정합니다.
           </p>
         </div>
-        <Button onClick={handleSave} disabled={saving}>
+        <Button onClick={handleSave} disabled={saving || !isAdmin}>
           {saving ? '저장 중...' : '저장'}
         </Button>
       </div>
+
+      <AdminSessionBar isAdmin={isAdmin} onChange={refreshAdmin} />
 
       <div className="mb-6 flex items-center gap-2">
         <label className="text-sm text-[#555]">계열사</label>
@@ -452,7 +458,7 @@ export default function ImpactCriteriaPage() {
           ))}
         </select>
 
-        {addingCompany ? (
+        {isAdmin && (addingCompany ? (
           <>
             <input
               type="text"
@@ -490,7 +496,7 @@ export default function ImpactCriteriaPage() {
           <Button size="sm" variant="secondary" onClick={() => setAddingCompany(true)}>
             + 계열사 추가
           </Button>
-        )}
+        ))}
       </div>
       <p className="text-xs text-[#999] -mt-4 mb-6">
         장애복잡도 / 고객서비스영향도와 비즈니스영향도의 가중치는 모든 계열사 공통입니다. 계열사마다 다른 부분은
@@ -519,7 +525,7 @@ export default function ImpactCriteriaPage() {
         </div>
       )}
 
-      <div className="space-y-6">
+      <div className={`space-y-6 ${isAdmin ? '' : 'pointer-events-none opacity-50 select-none'}`}>
         {draft.categories.map((category) => (
           <Card key={category.id}>
             <div className="flex items-center justify-between mb-4">

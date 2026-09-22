@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDB } from '@/lib/db';
+import { isAdminRequest } from '@/lib/auth';
 import { isValidName } from '@/lib/validation';
 import type { Company } from '@/types';
 
@@ -16,6 +17,10 @@ export async function GET() {
 // 모든 계열사 공통이라 이미 존재하는 것을 그대로 쓰고, "대상(업무서비스)" 시스템 목록만 빈 상태로 시작해
 // 기준표 관리 화면에서 새로 입력하면 된다.
 export async function POST(request: NextRequest) {
+  if (!isAdminRequest(request)) {
+    return NextResponse.json({ error: '관리자만 수정할 수 있습니다.' }, { status: 401 });
+  }
+
   const body = await request.json().catch(() => null);
   const name = body?.name;
   if (!isValidName(name)) {

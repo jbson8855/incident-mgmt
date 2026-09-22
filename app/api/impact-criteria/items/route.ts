@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDB } from '@/lib/db';
+import { isAdminRequest } from '@/lib/auth';
 import { isValidName, isValidRatio } from '@/lib/validation';
 import type { SelectionType } from '@/types';
 
 export async function POST(request: NextRequest) {
+  if (!isAdminRequest(request)) {
+    return NextResponse.json({ error: '관리자만 수정할 수 있습니다.' }, { status: 401 });
+  }
+
   const body = await request.json();
   const { subcategoryId, name, value, groupName, companyId } = body;
 
