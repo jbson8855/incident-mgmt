@@ -30,7 +30,8 @@ async function fetchList(query = ''): Promise<{ status: number; body: IncidentLo
 
 async function fetchDetail(id: number): Promise<{ status: number; body: IncidentLog | { error: string } }> {
   const { GET } = await import('@/app/api/incident-logs/[id]/route');
-  const req = new Request(`http://localhost/api/incident-logs/${id}`) as any;
+  const { NextRequest } = await import('next/server');
+  const req = new NextRequest(`http://localhost/api/incident-logs/${id}`);
   const res = await GET(req, { params: Promise.resolve({ id: String(id) }) });
   const body = await res.json();
   return { status: res.status, body };
@@ -172,17 +173,17 @@ describe('US-17 / OutOfScope', () => {
   it('목록 route에는 등록·수정·삭제(POST/PATCH/DELETE)가 export되어 있지 않다', async () => {
     const routeModule = await import('@/app/api/incident-logs/route');
 
-    expect((routeModule as any).POST).toBeUndefined();
-    expect((routeModule as any).PATCH).toBeUndefined();
-    expect((routeModule as any).DELETE).toBeUndefined();
+    expect((routeModule as Record<string, unknown>).POST).toBeUndefined();
+    expect((routeModule as Record<string, unknown>).PATCH).toBeUndefined();
+    expect((routeModule as Record<string, unknown>).DELETE).toBeUndefined();
   });
 
   it('상세 route에도 등록·수정·삭제(POST/PATCH/DELETE)가 export되어 있지 않다', async () => {
     const routeModule = await import('@/app/api/incident-logs/[id]/route');
 
-    expect((routeModule as any).POST).toBeUndefined();
-    expect((routeModule as any).PATCH).toBeUndefined();
-    expect((routeModule as any).DELETE).toBeUndefined();
+    expect((routeModule as Record<string, unknown>).POST).toBeUndefined();
+    expect((routeModule as Record<string, unknown>).PATCH).toBeUndefined();
+    expect((routeModule as Record<string, unknown>).DELETE).toBeUndefined();
   });
 });
 

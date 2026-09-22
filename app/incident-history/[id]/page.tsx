@@ -18,6 +18,9 @@ export default function IncidentHistoryDetailPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // id가 바뀔 때마다(같은 페이지 컴포넌트를 재사용하는 클라이언트 내비게이션 포함) 새 fetch가
+    // 시작됐음을 보여줘야 하므로 매번 다시 로딩 상태로 되돌린다.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     fetch(`/api/incident-records/${params.id}`)
       .then(async (res) => {

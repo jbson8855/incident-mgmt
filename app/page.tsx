@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowRight, Calculator, Gauge, Send, SlidersHorizontal } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
@@ -62,9 +63,9 @@ export default function HomePage() {
       <div className="mb-8">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-semibold text-[#0a0a0a]">최근 산정 이력</h2>
-          <a href="/incident-history" className="text-xs text-[#999] hover:text-[#555]">
+          <Link href="/incident-history" className="text-xs text-[#999] hover:text-[#555]">
             전체 이력 보기 →
-          </a>
+          </Link>
         </div>
         <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
           {records === null ? (

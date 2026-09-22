@@ -35,6 +35,8 @@ export default function IncidentHistoryPage() {
   }, []);
 
   useEffect(() => {
+    // 필터/페이지가 바뀔 때마다 새 fetch가 시작됐음을 보여줘야 하므로 매번 다시 로딩 상태로 되돌린다.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     const params = new URLSearchParams();
     if (companyId) params.set('companyId', companyId);

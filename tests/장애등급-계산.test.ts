@@ -58,10 +58,11 @@ function baseBody(criteria: ImpactCriteria, overrides: Partial<IncidentCalculati
 
 async function callCalculate(body: unknown) {
   const { POST } = await import('@/app/api/incident-calculation/route');
-  const req = new Request('http://localhost/api/incident-calculation', {
+  const { NextRequest } = await import('next/server');
+  const req = new NextRequest('http://localhost/api/incident-calculation', {
     method: 'POST',
     body: JSON.stringify(body),
-  }) as any;
+  });
   const res = await POST(req);
   const json = await res.json();
   return { status: res.status, body: json };
@@ -130,7 +131,7 @@ describe('ID-failure-scope-exclusive', () => {
 describe('US-7 / ID-no-unknown-for-systems', () => {
   it('서비스장애범위가 빠지면 계산이 진행되지 않고(400) 이력이 저장되지 않는다', async () => {
     const criteria = await fetchCriteria();
-    const body = baseBody(criteria) as any;
+    const body = baseBody(criteria) as Partial<IncidentCalculationRequest>;
     delete body.failureScope;
     const before = recordCount();
 
@@ -142,7 +143,7 @@ describe('US-7 / ID-no-unknown-for-systems', () => {
 
   it('장애복잡도가 빠지면 계산이 진행되지 않고(400) 이력이 저장되지 않는다', async () => {
     const criteria = await fetchCriteria();
-    const body = baseBody(criteria) as any;
+    const body = baseBody(criteria) as Partial<IncidentCalculationRequest>;
     delete body.complexity;
     const before = recordCount();
 
@@ -154,7 +155,7 @@ describe('US-7 / ID-no-unknown-for-systems', () => {
 
   it('접속장애여부가 빠지면 계산이 진행되지 않고(400) 이력이 저장되지 않는다', async () => {
     const criteria = await fetchCriteria();
-    const body = baseBody(criteria) as any;
+    const body = baseBody(criteria) as Partial<IncidentCalculationRequest>;
     delete body.accessFailure;
     const before = recordCount();
 
@@ -166,7 +167,7 @@ describe('US-7 / ID-no-unknown-for-systems', () => {
 
   it('응답속도가 빠지면 계산이 진행되지 않고(400) 이력이 저장되지 않는다', async () => {
     const criteria = await fetchCriteria();
-    const body = baseBody(criteria) as any;
+    const body = baseBody(criteria) as Partial<IncidentCalculationRequest>;
     delete body.responseSpeed;
     const before = recordCount();
 
@@ -178,7 +179,7 @@ describe('US-7 / ID-no-unknown-for-systems', () => {
 
   it('동일장애재발이 빠지면 계산이 진행되지 않고(400) 이력이 저장되지 않는다', async () => {
     const criteria = await fetchCriteria();
-    const body = baseBody(criteria) as any;
+    const body = baseBody(criteria) as Partial<IncidentCalculationRequest>;
     delete body.recurrence;
     const before = recordCount();
 
