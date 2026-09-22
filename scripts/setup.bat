@@ -33,5 +33,22 @@ echo Creating desktop shortcut...
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0create-shortcut.ps1"
 
 echo.
+echo Opening Windows Firewall port 3001 (for access from other devices)...
+netsh advfirewall firewall show rule name="Incident Mgmt (3001)" >nul 2>nul
+if errorlevel 1 (
+    netsh advfirewall firewall add rule name="Incident Mgmt (3001)" dir=in action=allow protocol=TCP localport=3001 >nul 2>nul
+    if errorlevel 1 (
+        echo [WARN] Could not add the firewall rule automatically ^(admin rights required^).
+        echo        Right-click setup.bat and "Run as administrator", or add the rule manually:
+        echo        netsh advfirewall firewall add rule name="Incident Mgmt (3001)" dir=in action=allow protocol=TCP localport=3001
+    ) else (
+        echo Firewall rule added.
+    )
+) else (
+    echo Firewall rule already exists.
+)
+
+echo.
 echo Done. Double-click the desktop icon to launch the app.
+echo Other devices on the same network can connect using this PC's LAN IP shown when the app starts.
 pause

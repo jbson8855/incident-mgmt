@@ -15,6 +15,15 @@ npm install
 npm run dev   # http://localhost:3001
 ```
 
+### 다른 기기에서 접속하기 (같은 네트워크)
+
+`scripts/setup.bat`을 실행하면 방화벽에 3001 포트 인바운드 규칙이 자동으로 추가되고,
+`scripts/start-app.ps1`(바탕화면 아이콘)로 서비스를 켜면 이 PC의 LAN IP가 팝업으로 표시된다.
+같은 네트워크의 다른 기기 브라우저에서 `http://<표시된 IP>:3001`로 접속하면 된다.
+
+- IP/네트워크 대역은 `next.config.ts`에서 실행 시점에 자동으로 감지하므로 PC를 바꿔도 설정을 수정할 필요가 없다.
+- 방화벽 규칙이 자동으로 추가되지 않으면(관리자 권한 필요) `setup.bat`을 관리자 권한으로 다시 실행하거나 안내되는 `netsh` 명령을 직접 실행한다.
+
 ### `npm install`에서 better-sqlite3 빌드 오류가 날 때
 
 `prebuild-install` 실패 후 C++ 컴파일러(Visual Studio Build Tools)가 없다는 오류가 보이면, 설치된 Node.js 버전에 맞는 사전 빌드 바이너리를 못 찾아 소스 빌드로 넘어간 경우다. 아래 순서로 해결한다.
